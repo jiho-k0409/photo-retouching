@@ -52,13 +52,10 @@ app.get('/',(req,res)=>{
   res.render('index',{authorized:authorized});
 });
 
-app.get('/result',(req,res)=>{
-  let photos = fs.readdirSync(`./uploads/${req.query.id}`);
-  res.render('result',{id:req.query.id,photos:photos})
-})
+
 
 app.post('/profile', upload.array('wedding', 12), function (req, res, next) {
-  res.redirect(`/result?id=${req.signedCookies.id}`);
+  res.redirect(`/`);
 });
 
 let secretNum=000000
