@@ -8,26 +8,25 @@ const storage = multer.diskStorage({
     if(!fs.existsSync(__dirname+`/uploads/${req.body.name}_${req.body.phone}`)){
       fs.mkdirSync(__dirname+`/uploads/${req.body.name}_${req.body.phone}`)
     }
-    cb(null, __dirname+`/uploads/${req.body.name}_${req.body.phone}`)
+    cb(null, __dirname+`/uploads/${req.body.name}_${req.body.phone}`);
   },
   filename: function (req, file, cb) {
-    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+    file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
     cb(null,file.originalname);
   }
 });
 
 const fileFilter=(req,file,cb)=>{
-  const fileType = file.mimetype
-
+  const fileType = file.mimetype;
   if(fileType.split('/')[0]=="image"){
     cb(null,true);
   }else{
-    console.log("이상한 파일!")
+    console.log("이상한 파일!");
     cb(null,false);
   }
 }
 
-const upload = multer({ storage: storage, fileFilter:fileFilter })
+const upload = multer({ storage: storage, fileFilter:fileFilter });
 
 const app = express();
 
@@ -41,12 +40,12 @@ app.use(express.urlencoded({extended:false}));
 app.use(cookieParser('akdfjeia'));
 
 app.get('/',(req,res)=>{
-  let authorized = false
+  let authorized = false;
   if(req.signedCookies.id!==undefined){
-    authorized = true
+    authorized = true;
   }else{
     authorized = false;
-  }
+  };
 
   res.render('index',{authorized:authorized});
 });
@@ -54,7 +53,7 @@ app.get('/',(req,res)=>{
 
 
 app.post('/profile', upload.array('wedding', 12), function (req, res, next) {
-  console.log(res.statusCode)
+  console.log(res.statusCode,req.body.name,req.body.phone);
   res.redirect(`/`);
 });
 
@@ -64,9 +63,9 @@ app.post('/auth',(req,res)=>{
   if(req.body.pw==secretNum){
     res.cookie('id','국지호',{maxAge:600000,httpOnly:true,signed:true});
     res.cookie('tel','01042852048',{maxAge:600000,httpOnly:true,signed:true});
-  }
-  res.redirect('/')
-})
+  };
+  res.redirect('/');
+});
 
 app.listen(port,()=>{
     console.log("listening on 3000");
