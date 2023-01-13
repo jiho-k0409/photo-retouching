@@ -45,7 +45,6 @@ app.get('/',(req,res)=>{
   if(req.signedCookies.id!==undefined){
     authorized = true
   }else{
-    console.log(req.signedCookies)
     authorized = false;
   }
 
@@ -55,6 +54,7 @@ app.get('/',(req,res)=>{
 
 
 app.post('/profile', upload.array('wedding', 12), function (req, res, next) {
+  console.log(res.statusCode)
   res.redirect(`/`);
 });
 
