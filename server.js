@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const fs = require('fs');
-const contentDisposition = require('content-disposition')
+const helmet = require('helmet');
+
 
 const app = express();
 
@@ -14,6 +14,7 @@ app.set('views',__dirname+'/views');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser('akdfjeia'));
+app.use(helmet());
 
 const root = require('./routes/root');
 const auth = require('./routes/auth');
