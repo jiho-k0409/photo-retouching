@@ -16,7 +16,8 @@
         <div class="tel"><%= tel %> </div>
         <% let file = fileList[i].files %> 
         <% for(let x=0;x<file.length;x++){%>
-            <a href=<%=`/download?user=${user}_${tel}&file=${file[x]}`%>><%=file[x] %> </a>
+            <% let urlFileName = file[x].replace(/ /g,"%20")%> 
+            <a href=<%=`/download?user=${user}_${tel}&file=${urlFileName}`%>><%=file[x] %> </a>
         <%} %>
         
     <%} %> 
