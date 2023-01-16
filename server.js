@@ -2,7 +2,6 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
-
 const app = express();
 
 
@@ -27,6 +26,11 @@ app.use('/auth',auth);
 app.use('/profile',profile);
 app.use('/admin',admin);
 app.use('/download',download)
+
+app.use(function(req,res,next){
+    res.status(404).render('404')
+})//모든라우터의 맨 밑에 위치해야함
+
 
 app.listen(port,()=>{
     console.log("listening on 3000");

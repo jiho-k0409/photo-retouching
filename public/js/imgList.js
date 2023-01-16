@@ -1,6 +1,8 @@
 const files = document.querySelector('#image').files;
 const fileList = document.querySelector('.file-list');
 const fileInput = document.querySelector('#image');
+const nameDisplay = document.querySelector('.input-box');
+const selectPhoto = document.querySelector('#file-label');
 let fileName = [];
 
 
@@ -33,18 +35,32 @@ function createFileList(file){
     listContainer.appendChild(eachFile);
     listContainer.appendChild(deleteBtn);
     deleteBtn.addEventListener('click',(e)=>{
-        console.log(fileInput.files)
         let dataTrans = new DataTransfer();
         let fileArr = Array.from(fileInput.files);
         let remains = fileArr.filter(function(file){return file.name!=e.target.id})
-        console.log(remains)
         remains.forEach(file=>{
             dataTrans.items.add(file)
         });
-        console.log(dataTrans);
         fileInput.files = dataTrans.files;
         listContainer.remove();
         eachFile.remove();
         deleteBtn.remove();
+        
     })
 }
+
+
+
+fileInput.addEventListener('change',function(){
+    let firstFile = fileInput.files[0].name
+    nameDisplay.innerText = firstFile;
+})
+
+const toggleList = document.querySelector('.input-box');
+toggleList.addEventListener('click',()=>{
+    if(fileList.style.display =='none'){
+        fileList.style.display='inline';
+    }else{
+        fileList.style.display='none';
+    }
+})

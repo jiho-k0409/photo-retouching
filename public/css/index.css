@@ -1,0 +1,95 @@
+#name{
+    background-color: rgb(203, 203, 203);
+    border: none;
+    border-radius: 5px;
+    height: 3em;
+    width: 10em;
+    
+}
+
+#phone{
+    background-color: rgb(203, 203, 203);
+    border: none;
+    border-radius: 5px;
+    height: 3em;
+    width: 16em;
+}
+
+#image{
+    display: none;
+}
+
+#file-label{
+    border : solid 1px;
+    border-radius: 5px;
+    width : 3em;
+    height: 3em;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.tel-name{
+    display: flex;
+}
+
+.input-container{
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.input-box{
+    background-color: rgb(203, 203, 203);
+    border: none;
+    border-radius: 5px;
+    height: 3em;
+    width: 18.7em;
+    padding-left: 10px;
+    line-height: 3em;
+}
+
+.file-container{
+    display: flex;
+    margin-bottom: 5px;
+}
+
+.form-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+label{
+    display: block;
+}
+
+#form-submit{
+    border-radius: 5px;
+    width: 28em;
+
+}
+
+.file-list{
+    z-index: 2;
+    position: relative;
+    display: none;
+    
+}
+
+.list-container{
+    display: flex;
+    position: absolute;
+    z-index: 3;
+    background-color: rgb(216, 214, 214);
+    border: none;
+    border-radius: 5px;
+    height: 3em;
+    width: 18.7em;
+    padding-left: 10px;
+    line-height: 3em;
+    
+}
+
+.whole-list{
+    display: flex;
+    flex-direction: column;
+}

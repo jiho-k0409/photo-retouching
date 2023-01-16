@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/modal.css">
     <link rel="stylesheet" href="/css/index.css">
-</head>
+    
+  </head>
 <body>
   <% if(!authorized){ %>
     
@@ -23,38 +24,36 @@
   <%}%>   
   <h1>사진 제출하기</h1>
   <p>사진의 원본을 그대로 받기 위해 자체적인 사이트에서 사진을 받고 있습니다. 입력하신 정보와 사진은 결혼식 이후 한 달 동안 보관됩니다.</p>
-  
-  <form class="profile" action="/profile" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-    <div class="tel-name">                                                
-      <div class="input-container">
-        <label for="name">성명</label>
-        <input type="text" name="name" id="name" required>
+  <div class="form-container">
+    <form class="profile" action="/profile" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+      <div class="tel-name">                                                
+        <div class="input-container">
+          <label for="name">성명</label>
+          <input type="text" name="name" id="name" required>
+        </div>
+        <div class="input-container">
+          <label for="phone">전화번호</label>
+          <input type="tel" name="phone" id="phone" required>
+        </div>
       </div>
-      <div class="input-container">
-        <label for="phone">전화번호</label>
-        <input type="tel" name="phone" id="phone" required>
+      <div class="file-container">
+        <label id="file-label" for="image">사진<br>선택</label>
+        <input id="image" type="file" name="wedding" multiple required>
+        <div class="whole-list">
+          <div class="input-box"></div>
+          <div class="file-list"></div>
+        </div>
+        
       </div>
-    </div>
-    <div class="input-container">
-      <label id="file-label" for="image">사진제출</label>
-      <input id="image" type="file" name="wedding" multiple required>
-    </div>
-    <div class="input-container">
-      <label  for="request">요청사항</label>
-      <textarea name="request" id="request" cols="30" rows="10"></textarea>
-    </div>
-    <input type="submit" value="제출">       
-  </form>
-  <h3>선택하신 사진</h3>
-  <div class="file-list">
-    
+      <input id="form-submit" type="submit" value="완료">       
+    </form>
   </div>
+
+
   <div class="footer">
     
   </div>
 
-
-  
   <script src="/js/imgList.js"></script>
 </body>
 </html>
