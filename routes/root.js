@@ -4,14 +4,11 @@ const router = express.Router();
 
 
 router.get('/',(req,res)=>{
-    let authorized = false;
-    if(req.signedCookies.id!==undefined){
-      authorized = true;
+    if(req.session.user===undefined){
+      res.redirect('/login')
     }else{
-      authorized = false;
-    };
-  
-    res.render('index',{authorized:authorized});
+      res.render('index');
+    }
   });
 
 module.exports =router;

@@ -9,6 +9,7 @@ let fileName = [];
 
 
 fileInput.addEventListener('change',()=>{
+    onlyImage()
     fileName= [];
     fileList.innerHTML = ''
     for(let x=0;x<fileInput.files.length;x++){
@@ -64,3 +65,15 @@ toggleList.addEventListener('click',()=>{
         fileList.style.display='none';
     }
 })
+
+function onlyImage(){
+    let fileArr = Array.from(fileInput.files);
+    fileArr.forEach(file=>{
+        console.log(file)
+        let checkExtension=file.name.split('.')[-1]
+        if(checkExtension!='jpg'||checkExtension!='png'){
+            alert('jpg파일과 png파일만 전송할 수 있습니다');
+            fileInput.value='';
+        }
+    })
+}

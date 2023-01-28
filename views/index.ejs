@@ -6,54 +6,29 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/modal.css">
     <link rel="stylesheet" href="/css/index.css">
-    
   </head>
-<body>
-  <% if(!authorized){ %>
-    
-    <div class="modal-background">
-      <div class="modal">
-        <h3>인증번호를 입력하세요</h3>
-        <form action="/auth" method="post">
-          <label for="pw">인증번호</label>
-          <input type="number" name="pw" id="pw" required>
-          <input type="submit" value="제출">
-        </form>
-      </div>
-    </div>    
-  <%}%>   
-  <h1>사진 제출하기</h1>
-  <p>사진의 원본을 그대로 받기 위해 자체적인 사이트에서 사진을 받고 있습니다. 입력하신 정보와 사진은 결혼식 이후 한 달 동안 보관됩니다.</p>
-  <div class="form-container">
-    <form class="profile" action="/profile" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-      <div class="tel-name">                                                
-        <div class="input-container">
-          <label for="name">성명</label>
-          <input type="text" name="name" id="name" required>
+  <body>
+    <h1>사진 제출하기</h1>
+    <p>사진의 원본을 그대로 받기 위해 자체적인 사이트에서 사진을 받고 있습니다. 입력하신 정보와 사진은 결혼식 이후 한 달 동안 보관됩니다.</p>
+    <div class="form-container">
+      <form class="profile" action="/profile" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+        <div class="file-container">
+          <label id="file-label" for="image">사진<br>선택</label>
+          <input id="image" type="file" name="wedding" multiple required accept="image/*">
+          <div class="whole-list">
+            <div class="input-box"></div>
+            <div class="file-list"></div>
+          </div>
         </div>
-        <div class="input-container">
-          <label for="phone">전화번호</label>
-          <input type="tel" name="phone" id="phone" required>
-        </div>
-      </div>
-      <div class="file-container">
-        <label id="file-label" for="image">사진<br>선택</label>
-        <input id="image" type="file" name="wedding" multiple required>
-        <div class="whole-list">
-          <div class="input-box"></div>
-          <div class="file-list"></div>
-        </div>
-        
-      </div>
-      <input id="form-submit" type="submit" value="완료">       
-    </form>
-  </div>
+        <input id="form-submit" type="submit" value="완료">       
+      </form>
+    </div>
 
 
-  <div class="footer">
-    
-  </div>
+    <div class="footer">
+      
+    </div>
 
-  <script src="/js/imgList.js"></script>
-</body>
+    <script src="/js/imgList.js"></script>
+  </body>
 </html>

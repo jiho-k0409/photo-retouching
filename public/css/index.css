@@ -70,7 +70,8 @@ label{
 #form-submit{
     border-radius: 5px;
     width: 372px;
-
+    border: solid black 2px;
+    background-color: rgb(215, 215, 215);
 }
 
 .file-list{
