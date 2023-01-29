@@ -1,14 +1,11 @@
 const express = require('express');
+const checkLogin = require('../checklogin');
 
 const router = express.Router();
 
 
-router.get('/',(req,res)=>{
-    if(req.session.user===undefined){
-      res.redirect('/login')
-    }else{
-      res.render('index');
-    }
-  });
+router.get('/',checkLogin,(req,res)=>{
+  res.render('index');
+});
 
 module.exports =router;

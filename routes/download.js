@@ -2,8 +2,9 @@ const express =require('express');
 const fs = require('fs')
 const router = express.Router();
 const contentDisposition = require('content-disposition');
+const checkLogin = require('../checklogin');
 
-router.get('/',(req,res)=>{
+router.get('/',checkLogin,(req,res)=>{
     let user = req.query.user;
     let file = req.query.file;
     res.setHeader('Content-Disposition', contentDisposition(file));

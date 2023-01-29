@@ -7,5 +7,5 @@ const dbConf = {
     database : 'session_test',
 }
 
-
-module.exports = dbConf;
+const connection = mysql.createConnection(dbConf)
+module.exports = connection;

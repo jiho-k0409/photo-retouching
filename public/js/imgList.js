@@ -9,7 +9,7 @@ let fileName = [];
 
 
 fileInput.addEventListener('change',()=>{
-    onlyImage()
+    //onlyImage()
     fileName= [];
     fileList.innerHTML = ''
     for(let x=0;x<fileInput.files.length;x++){

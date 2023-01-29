@@ -7,6 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <h1><%= name %></h1>
+    <% for(let i =0;i<fileList.length;i++){%>
+            <img height="300px" src="<%= fileList[i] %>" alt="당신의 사진">
+        <%} %> 
 </body>
 </html>
