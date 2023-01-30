@@ -1,6 +1,7 @@
 const express =require('express');
 const fs = require('fs');
 const connection = require('../db');
+const multerConf = require('../admin_multer_conf');
 
 const router = express.Router();
 
@@ -12,14 +13,15 @@ router.get('/',async (req,res)=>{
 
     for(let i =0;i<folders.length;i++){
       let file = fs.readdirSync(`./client_uploads/${folders[i]}`);
-      connection.query(`select name from member_table where user_unique='${folders[i]}'`,function(err,result,fields){
-        console.log(result[0].name)
-        fileList.push({folder : result[0].name,files:file})
-        console.log(fileList)
+      connection.query(`select name,email from member_table where user_unique='${folders[i]}'`,function(err,result,fields){
+        fileList.push({name : result[0].name,files:file,email:result[0].email})
+        console.log(fileList[0].email)
         res.render('admin',{fileList:fileList});
       })
     }
-
+}).post('/',multerConf.array('result',12),(req,res)=>{
+  
+  res.redirect('/')
 })
 
 module.exports = router;

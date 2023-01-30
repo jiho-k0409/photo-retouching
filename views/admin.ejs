@@ -7,19 +7,23 @@
     <title>Document</title>
 </head>
 <body>
-    <% fileList%>
     <% for(let i=0;i<fileList.length;i++){%>
-        <% let splited = fileList[i].folder.split('_') %>
-        <% let user = splited[0] %>
-        <% let tel = splited[1] %> 
+        <% let user = fileList[i].name %>
+        <% let email = fileList[i].email %> 
         <div class="user"><%=user%></div>
-        <div class="tel"><%= tel %> </div>
+        <div class="email"><%= email %> </div>
         <% let file = fileList[i].files %> 
         <% for(let x=0;x<file.length;x++){%>
             <% let urlFileName = file[x].replace(/ /g,"%20")%> 
-            <a href=<%=`/download?user=${user}_${tel}&file=${urlFileName}`%>><%=file[x] %> </a>
+            <a href=<%=`/download/upload?user=${user}&email=${email}&file=${urlFileName}`%>><%=file[x] %> </a>
+            
         <%} %>
-        
+        <form action="/admin" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="name" value="<%= user %>">
+            <input type="hidden" name="email" value="<%= email %>">
+            <input type="file" name="result" id="result">
+            <input type="submit" value="완성">
+        </form>
     <%} %> 
 
 </body>

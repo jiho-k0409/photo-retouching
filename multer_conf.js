@@ -7,7 +7,8 @@ const { connect } = require('http2');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if(!fs.existsSync(path.join(__dirname,`/client_uploads/${req.session.user.id}`))){
-      fs.mkdirSync(path.join(__dirname,`/client_uploads/${req.session.user.id}`))
+      fs.mkdirSync(path.join(__dirname,`/client_uploads/${req.session.user.id}`));
+      fs.mkdirSync(path.join(__dirname,`/admin_uploads/${req.session.user.id}`));
     }
         
     cb(null, __dirname+`/client_uploads/${req.session.user.id}`);

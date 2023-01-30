@@ -6,7 +6,6 @@ function checkLogin(req,res,next){
             res.redirect('/login');
         }
     }else{
-        console.log(req.session)
         next()
     }
 }

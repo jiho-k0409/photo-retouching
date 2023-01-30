@@ -8,10 +8,9 @@ const connection = require('./db')
 require('dotenv').config();
 const fs = require('fs')
 const checkLogin = require('./checklogin');
+const path = require('path');
 
 const app = express();
-
-
 
 const options = {
     host:'localhost',
@@ -37,7 +36,7 @@ app.use(session({
 	resave: false,
 	saveUninitialized: false,
     cookie : {
-        maxAge:1000*60*5,
+        maxAge:1000*60*60*24*3,
         //secure:true,
         httpOnly:true,
         signed:true
@@ -45,7 +44,8 @@ app.use(session({
 }));
 
 app.use(express.static('public'));
-app.use(express.static('client_uploads'))
+app.use(express.static('client_uploads'));
+app.use(express.static('admin_uploads'));
 app.use(express.urlencoded({extended:true}));
 app.use(helmet());
 app.use(expressCspHeader({
@@ -53,7 +53,6 @@ app.use(expressCspHeader({
         'script-src': [SELF, INLINE, "http://openapi.map.naver.com","http://nrbe.map.naver.net","http://dapi.kakao.com","http://t1.daumcdn.net","http://nid.naver.com"],
     }
 }));
-
 
 
 const root = require('./routes/root');
@@ -78,16 +77,26 @@ app.get('/my',checkLogin,(req,res)=>{
     if(req.session.user===undefined){
         res.redirect('/login')
     }else{
-        const query=`select name from member_table where user_unique='${req.session.user.id}'`
-        const result = connection.query(query,function(err,result,fields){
+        const query=`select name, email from member_table where user_unique='${req.session.user.id}'`
+        connection.query(query,async function(err,result,fields){
             if(err) throw err
-            console.log(result[0].name)
-            const folders=fs.readdirSync(`client_uploads/${req.session.user.id}`);
-            console.log(folders)
-            let fileList = []
-            const path = folders.forEach(file=>fileList.push(`/${req.session.user.id}/${file}`))
-            console.log(fileList)
-            res.render('my',{name:result[0].name,fileList:fileList})
+            try{
+                let fileList = [];
+                let outcome = [];
+                const folders=fs.readdirSync(path.join(__dirname+`/client_uploads/${req.session.user.id}`));
+                folders.forEach(file=>fileList.push(`/${req.session.user.id}/${file}`));    
+                const outcomeFolders = fs.readdirSync(path.join(__dirname+`/admin_uploads/${req.session.user.id}`));
+                if(outcomeFolders.length===0){
+                    console.log('do your work');
+                }else{
+                    outcomeFolders.forEach(file=>outcome.push(`/${req.session.user.id}/${file}`))
+                }   
+                res.render('my',{name:result[0].name,email:result[0].email,fileList:fileList,outcome:outcome});  
+            }catch(err){
+                console.log(err)
+                res.redirect('/')
+            }
+  
         })
     }
 });
@@ -125,7 +134,7 @@ app.get('/login/callback', async (req,res)=>{
                 connection.query(`insert into member_table (name,gender,email,age_group, user_unique) values ('${result.response.name}','${result.response.gender}','${result.response.email}','${result.response.age}','${result.response.id}')`);
                 req.session.save(function(){
                     console.log(req.session.user)
-                    res.redirect('/')
+                    res.redirect('/my')
                 })    
             }else{
                 console.log(result.response.id)
@@ -135,7 +144,7 @@ app.get('/login/callback', async (req,res)=>{
                 }
                 req.session.save(function(){
                     console.log(req.session.user)
-                    res.redirect('/')
+                    res.redirect('/my')
                 })
             }
         })  
@@ -148,4 +157,3 @@ app.get('/login/callback', async (req,res)=>{
 app.listen(port,()=>{
     console.log("listening on 3000");
 });
-

@@ -8,8 +8,26 @@
 </head>
 <body>
     <h1><%= name %></h1>
-    <% for(let i =0;i<fileList.length;i++){%>
+    <h4><%= email %></h4>
+    <% if(fileList.length!==0){%>
+        <% for(let i =0;i<fileList.length;i++){%>
             <img height="300px" src="<%= fileList[i] %>" alt="당신의 사진">
         <%} %> 
+    <%}else{%>
+        <a href="/">사진제출하러 가기</a>
+    <% } %> 
+    
+    <% if(outcome.length>0){%>
+        <div>
+            <div>완료</div>
+            <a href="/download/outcome?name=<%= name %>&email=<%= email %>"><button>사진 모두받기</button></a>
+        </div>
+        <%}else{%>
+            <% if(fileList.length===0){%>
+                      
+            <%}else{ %> 
+            <div>작업중입니다</div>
+            <%} %> 
+        <%}%>
 </body>
 </html>
