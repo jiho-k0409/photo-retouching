@@ -9,6 +9,8 @@
 <body>
     <h1><%= name %></h1>
     <h4><%= email %></h4>
+    <a href="/logout">로그아웃</a>
+    <div>
     <% if(fileList.length!==0){%>
         <% for(let i =0;i<fileList.length;i++){%>
             <img height="300px" src="<%= fileList[i] %>" alt="당신의 사진">
@@ -16,7 +18,7 @@
     <%}else{%>
         <a href="/">사진제출하러 가기</a>
     <% } %> 
-    
+    </div>
     <% if(outcome.length>0){%>
         <div>
             <div>완료</div>

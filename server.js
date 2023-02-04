@@ -4,7 +4,7 @@ const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
 const fetch = require('node-fetch')
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session)
-const connection = require('./db')
+const dbConf = require('./db')
 require('dotenv').config();
 const fs = require('fs')
 const checkLogin = require('./checklogin');
@@ -73,31 +73,29 @@ app.get('/invitation',(req,res)=>{
     res.render('test')
 });
 
-app.get('/my',checkLogin,(req,res)=>{
+app.get('/my',checkLogin,async(req,res)=>{
     if(req.session.user===undefined){
         res.redirect('/login')
     }else{
-        const query=`select name, email from member_table where user_unique='${req.session.user.id}'`
-        connection.query(query,async function(err,result,fields){
+        try {
+            const connection = await dbConf();
+            const query=`select name, email from member_table where user_unique='${req.session.user.id}'`
+            let [selected] = await connection.query(query);
+            let fileList = [];
+            let outcome = [];
+            const folders=fs.readdirSync(path.join(__dirname+`/client_uploads/${req.session.user.id}`));
+            folders.forEach(file=>fileList.push(`/${req.session.user.id}/${file}`));    
+            const outcomeFolders = fs.readdirSync(path.join(__dirname+`/admin_uploads/${req.session.user.id}`));
+            if(outcomeFolders.length===0){
+                console.log('do your work');
+            }else{
+                outcomeFolders.forEach(file=>outcome.push(`/${req.session.user.id}/${file}`))
+            }   
+            res.render('my',{name:selected[0].name,email:selected[0].email,fileList:fileList,outcome:outcome});   
+        } catch (err) {
             if(err) throw err
-            try{
-                let fileList = [];
-                let outcome = [];
-                const folders=fs.readdirSync(path.join(__dirname+`/client_uploads/${req.session.user.id}`));
-                folders.forEach(file=>fileList.push(`/${req.session.user.id}/${file}`));    
-                const outcomeFolders = fs.readdirSync(path.join(__dirname+`/admin_uploads/${req.session.user.id}`));
-                if(outcomeFolders.length===0){
-                    console.log('do your work');
-                }else{
-                    outcomeFolders.forEach(file=>outcome.push(`/${req.session.user.id}/${file}`))
-                }   
-                res.render('my',{name:result[0].name,email:result[0].email,fileList:fileList,outcome:outcome});  
-            }catch(err){
-                console.log(err)
-                res.redirect('/')
-            }
-  
-        })
+        }
+        
     }
 });
 
@@ -109,6 +107,7 @@ app.get('/login',(req,res)=>{
 
 app.get('/login/callback', async (req,res)=>{
     try{
+        const connection = await dbConf();//DB connecton
         const code = req.query.code;
         const state = req.query.state;
         const options = {
@@ -123,35 +122,35 @@ app.get('/login/callback', async (req,res)=>{
             return result
         }
         const result = await getResponseJSON();
-        console.log(result)
-        connection.query(`select id from member_table where user_unique='${result.response.id}'`,(err,outcome,fields)=>{
-            if(outcome.length===0){
-                req.session.user = {
-                    id:result.response.id,
-                    authenticated : true
-                }
-                console.log(result.response.id)
-                connection.query(`insert into member_table (name,gender,email,age_group, user_unique) values ('${result.response.name}','${result.response.gender}','${result.response.email}','${result.response.age}','${result.response.id}')`);
-                req.session.save(function(){
-                    console.log(req.session.user)
-                    res.redirect('/my')
-                })    
-            }else{
-                console.log(result.response.id)
-                req.session.user = {
-                    id:result.response.id,
-                    authenticated : true
-                }
-                req.session.save(function(){
-                    console.log(req.session.user)
-                    res.redirect('/my')
-                })
+        let [selected] = await connection.query(`select id from member_table where user_unique='${result.response.id}'`);
+        if(selected.length===0){
+            req.session.user = {
+                id:result.response.id,
+                authenticated : true
             }
-        })  
-    }catch{
+            await connection.query(`insert into member_table (name,gender,email,age_group, user_unique) values ('${result.response.name}','${result.response.gender}','${result.response.email}','${result.response.age}','${result.response.id}')`);
+            req.session.save(function(){
+                res.redirect('/my')
+            })    
+        }else{
+            console.log(result.response.id)
+            req.session.user = {
+                id:result.response.id,
+                authenticated : true
+            }
+            req.session.save(function(){
+                res.redirect('/my')
+            })
+        }
+    }catch(err){
+        console.log(err)
         res.redirect('/login')
     }
+})
 
+app.get('/logout',(req,res)=>{
+    req.session.destroy();
+    res.redirect('/login');
 })
 
 app.listen(port,()=>{
