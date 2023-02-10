@@ -25,7 +25,6 @@ const sessionStore = new MySQLStore(options);
 
 const port = 3000;
 
-
 app.set('view engine','ejs');
 app.set('views',__dirname+'/views');
 
@@ -37,7 +36,7 @@ app.use(session({
 	saveUninitialized: false,
     cookie : {
         maxAge:1000*60*60*24*3,
-        //secure:true,
+        secure:true,
         httpOnly:true,
         signed:true
     }
@@ -54,18 +53,18 @@ app.use(expressCspHeader({
     }
 }));
 
-
-const root = require('./routes/root');
+const root = require('./routes/root')
+const submit = require('./routes/submit');
 const profile = require('./routes/profile');
 const admin = require('./routes/admin');
 const download = require('./routes/download');
 const { json } = require('express');
 
 app.use('/',root);
+app.use('/submit',submit);
 app.use('/profile',profile);
 app.use('/admin',admin);
 app.use('/download',download)
-
 
 app.get('/invitation',(req,res)=>{
     res.header("Cross-Origin-Embedder-Policy", "credentialless");
@@ -86,11 +85,9 @@ app.get('/my',checkLogin,async(req,res)=>{
             const folders=fs.readdirSync(path.join(__dirname+`/client_uploads/${req.session.user.id}`));
             folders.forEach(file=>fileList.push(`/${req.session.user.id}/${file}`));    
             const outcomeFolders = fs.readdirSync(path.join(__dirname+`/admin_uploads/${req.session.user.id}`));
-            if(outcomeFolders.length===0){
-                console.log('do your work');
-            }else{
+            if(outcomeFolders.length!==0){
                 outcomeFolders.forEach(file=>outcome.push(`/${req.session.user.id}/${file}`))
-            }   
+            }
             res.render('my',{name:selected[0].name,email:selected[0].email,fileList:fileList,outcome:outcome});   
         } catch (err) {
             if(err) throw err
@@ -102,8 +99,6 @@ app.get('/my',checkLogin,async(req,res)=>{
 app.get('/login',(req,res)=>{
     res.render('login');
 });
-
-
 
 app.get('/login/callback', async (req,res)=>{
     try{

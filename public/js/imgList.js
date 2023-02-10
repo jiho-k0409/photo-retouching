@@ -9,7 +9,6 @@ let fileName = [];
 
 
 fileInput.addEventListener('change',()=>{
-    //onlyImage()
     fileName= [];
     fileList.innerHTML = ''
     for(let x=0;x<fileInput.files.length;x++){
@@ -53,8 +52,12 @@ function createFileList(file){
 
 
 fileInput.addEventListener('change',function(){
-    let firstFile = fileInput.files[0].name
-    nameDisplay.innerText = firstFile;
+    onlyImage();
+    if(fileInput.files[0]){
+        let firstFile = fileInput.files[0].name
+        nameDisplay.innerText = firstFile;
+    }
+
 })
 
 const toggleList = document.querySelector('.input-box');
@@ -69,9 +72,8 @@ toggleList.addEventListener('click',()=>{
 function onlyImage(){
     let fileArr = Array.from(fileInput.files);
     fileArr.forEach(file=>{
-        console.log(file)
-        let checkExtension=file.name.split('.')[-1]
-        if(checkExtension!='jpg'||checkExtension!='png'){
+        let checkExtension=file.name.split('.').pop()
+        if(checkExtension!=='jpg'&&checkExtension!=='png'){
             alert('jpg파일과 png파일만 전송할 수 있습니다');
             fileInput.value='';
         }

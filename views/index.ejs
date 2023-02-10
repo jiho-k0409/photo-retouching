@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/modal.css">
-    <link rel="stylesheet" href="/css/index.css">
-  </head>
-  <body>
-    <h1>사진 제출하기</h1>
-    <p>입력하신 정보와 사진은 완성본 확정일로부터 한달간 보관됩니다.</p>
-    <div class="form-container">
-      <form class="profile" action="/profile" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
-        <div class="file-container">
-          <label id="file-label" for="image">사진<br>선택</label>
-          <input id="image" type="file" name="wedding" multiple required accept="image/*">
-          <div class="whole-list">
-            <div class="input-box"></div>
-            <div class="file-list"></div>
-          </div>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/modal.css">
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+  <h1>사진 제출하기</h1>
+  <p>입력하신 정보와 사진은 완성본 확정일로부터 한달간 보관됩니다.</p>
+  <a href="https://retouch.pictures.kro.kr/my">마이페이지</a>
+  <div class="form-container">
+    <form class="profile" action="/profile" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+      <div class="file-container">
+        <label id="file-label" for="image">사진<br>선택</label>
+        <input id="image" type="file" name="wedding" multiple required accept="image/*">
+        <div class="whole-list">
+          <div class="input-box"></div>
+          <div class="file-list"></div>
         </div>
-        <input id="form-submit" type="submit" value="완료">       
-      </form>
-    </div>
+      </div>
+      <input id="form-submit" type="submit" value="완료">
+    </form>
+  </div>
 
 
-    <div class="footer">
-      
-    </div>
+  <div class="footer">
 
-    <script src="/js/imgList.js"></script>
-  </body>
+  </div>
+
+  <script src="/js/imgList.js"></script>
+</body>
+
 </html>

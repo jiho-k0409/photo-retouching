@@ -7,21 +7,26 @@ const router = express.Router();
 
 router
   .get("/", async (req, res) => {
-    console.log("good");
-    folders = fs.readdirSync("client_uploads");
-    let fileList = [];
-    
-    for (let i = 0; i < folders.length; i++) {
-      let file = fs.readdirSync(`./client_uploads/${folders[i]}`);
-      const result = await searchNameEmail(folders,i);
-      console.log(result);
-      fileList.push({
-        name: result[0].name,
-        files: file,
-        email: result[0].email,
-      });
+    if(req.session.user.id==='E-Fwnqc0BxL-kckC91PQlxo9Vcms1TDkgPWi6h8diyA'||req.session.user.id==='_QqIFPWdImO5-vawEln5tW0wpeknPKbd2UNeLAC8Kvg'){
+      console.log("good");
+      folders = fs.readdirSync("client_uploads");
+      let fileList = [];
+      for (let i = 0; i < folders.length; i++) {
+        let file = fs.readdirSync(`./client_uploads/${folders[i]}`);
+        const result = await searchNameEmail(folders,i);
+        console.log(result);
+        fileList.push({
+          name: result[0].name,
+          files: file,
+          email: result[0].email,
+        });
+      }
+      res.render("admin" , { fileList: fileList });
+    }else{
+      console.log(req.get('X-Real-IP'))
+      res.redirect('/my')
     }
-    res.render("admin" , { fileList: fileList });
+    
   })
   .post("/", multerConf.array("result", 12), (req, res) => {
     res.redirect("/admin");
